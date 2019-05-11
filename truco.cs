@@ -14,6 +14,7 @@ namespace ConsoleApplication9{
         static string[] jogador2;
 
         private static void construtor(){
+            //test for commiting
             copas = new int[12];
             espadas = new int[12];
             ouros = new int[12];
