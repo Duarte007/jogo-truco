@@ -12,6 +12,9 @@ namespace ConsoleApplication9{
         static int[] paus;
         static string[] jogador1;
         static string[] jogador2;
+        string cartaJogador1 = "";
+        string cartaJogador2 = "";
+
 
         private static void construtor(){
             //test for commiting
@@ -32,9 +35,10 @@ namespace ConsoleApplication9{
             construtor();
             distribuircarta(jogador1);
             distribuircarta(jogador2);
+            
             for (int pos = 0; pos < jogador1.Length; pos++){
-                Console.WriteLine("Carta" + (pos + 1) + "Do jogador 1 = "+ jogador1[pos]);
-                Console.WriteLine("Carta" + (pos + 1) + "Do jogador 2 = "+ jogador2[pos]);
+                Console.WriteLine("Carta " + (pos + 1) + " do jogador 1 = "+ jogador1[pos]);
+                Console.WriteLine("Carta " + (pos + 1) + " do jogador 2 = "+ jogador2[pos]);
             }
 
             Console.ReadKey();
@@ -106,6 +110,19 @@ namespace ConsoleApplication9{
                 ouros[pos] = 0;
                 paus[pos] = 0;
             }
+        }
+
+        static void jogadaBot(string[] jogador2){
+            int pos;
+            Random valorAleatorio = new Random();
+            if(cartaJogador1 != ""){
+                // to do...
+            } else {
+                pos = valorAleatorio.Next() % 4;
+                cartaJogador2 = jogador2[pos];
+            }
+            pos = int.Parse(Console.ReadLine());
+            cartaJogador2 = jogador2[pos];
         }
 
     }

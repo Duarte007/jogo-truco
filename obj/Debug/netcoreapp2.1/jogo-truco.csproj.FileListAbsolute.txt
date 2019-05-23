@@ -1,0 +1,11 @@
+D:\Projetos Programação\jogo-truco\bin\Debug\netcoreapp2.1\jogo-truco.deps.json
+D:\Projetos Programação\jogo-truco\bin\Debug\netcoreapp2.1\jogo-truco.runtimeconfig.json
+D:\Projetos Programação\jogo-truco\bin\Debug\netcoreapp2.1\jogo-truco.runtimeconfig.dev.json
+D:\Projetos Programação\jogo-truco\bin\Debug\netcoreapp2.1\jogo-truco.dll
+D:\Projetos Programação\jogo-truco\bin\Debug\netcoreapp2.1\jogo-truco.pdb
+D:\Projetos Programação\jogo-truco\obj\Debug\netcoreapp2.1\jogo-truco.csprojAssemblyReference.cache
+D:\Projetos Programação\jogo-truco\obj\Debug\netcoreapp2.1\jogo-truco.csproj.CoreCompileInputs.cache
+D:\Projetos Programação\jogo-truco\obj\Debug\netcoreapp2.1\jogo-truco.AssemblyInfoInputs.cache
+D:\Projetos Programação\jogo-truco\obj\Debug\netcoreapp2.1\jogo-truco.AssemblyInfo.cs
+D:\Projetos Programação\jogo-truco\obj\Debug\netcoreapp2.1\jogo-truco.dll
+D:\Projetos Programação\jogo-truco\obj\Debug\netcoreapp2.1\jogo-truco.pdb

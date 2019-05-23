@@ -1,0 +1,8 @@
+Coisas à fazer:
+
+1°: Fazer o pc jogar, de maneira a tentar ganhar realmente do usuário.
+2°: Fazer o usuário jogar, de maneira com que ele consiga ver suas cartas e escolher qual jogar pelo input.
+3°: Fazer uma função que crie um sistema de peso para as cartas, onde o zap tem o maior peso e os 4 os menores.
+4°: Fazer uma função que serve para pedir truco, poderá ser usada tanto pelo pc quanto pelo usuário.
+5°: Fazer uma função que calcula o placar do jogo.
+6°: Implementar todas as funções na main para ficar utilizável.
