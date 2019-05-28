@@ -14,6 +14,7 @@ namespace ConsoleApplication9{
         static string[] jogador2;
         static string cartaJogador1 = "";
         static string cartaJogador2 = "";
+        static int[] escolha = new int[3];
 
 
         private static void construtor(){
@@ -142,6 +143,57 @@ namespace ConsoleApplication9{
             }
             
             return 0;
+        }
+
+        public static void escolhadecarta()
+        {
+            int jogadas = 0;
+            int numcarta = 0;
+            while (jogadas < 3)
+            {
+                int i = 0;
+                for (int pos = 0; pos < jogador1.Length; pos++)
+                {
+                    if (escolha[pos] == 0)
+                    {
+                        Console.WriteLine("Carta" + (pos + 1) + " do jogador 1 = " + jogador1[pos]);
+                    }
+                }
+                while (i == 0)
+                {
+                    Console.WriteLine("Digite o número da carta que você quer jogar");
+                    numcarta = int.Parse(Console.ReadLine());
+                    if(numcarta <= escolha.Length)
+                    {
+                        if (escolha[numcarta - 1] == 0)
+                        {
+                            Console.WriteLine("Você jogou a carta " + jogador1[numcarta - 1]);
+                            i = 1;
+                            escolha[numcarta - 1] = numcarta;
+                            jogadas++;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Carta inválida, digite novamente");
+                            for (int pos = 0; pos < jogador1.Length; pos++)
+                            {
+                                if (escolha[pos] == 0)
+                                {
+                                    Console.WriteLine("Carta" + (pos + 1) + " do jogador 1 = " + jogador1[pos]);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Número de carta inválido, digite novamente");
+                    }                    
+                }                
+            }
+            for (int pos = 0; pos < escolha.Length; pos++)
+            {
+                escolha[pos] = 0;
+            }
         }
     
     }
