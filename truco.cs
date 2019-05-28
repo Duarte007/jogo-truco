@@ -246,20 +246,24 @@ namespace ConsoleApplication9 {
         static void pedeTruco(string[] grito, int pontuacao){
             int pos;
             int escolhaBot;
-            tento = pontuacao;
             Random frase = new Random();
             pos = frase.Next(0, 3);
             Console.WriteLine(grito[pos]);
 
             Random simOuNao = new Random();
-            escolhaBot = frase.Next(0, 1);
+            escolhaBot = frase.Next(0, 2);
 
             if(escolhaBot == 0){
                 Console.WriteLine("O BOT correu!");
-                correr = true;
+                correr = false;
                 pontoJogador1 += tento;
+                vezJogador1 = true;
+                vezJogador2 = false;
+                proximaRodada();
+                controleJogada();
             } else {
-                truco();
+                tento = pontuacao;
+                System.Console.WriteLine("CAI RATO!");
             }
         }
 
