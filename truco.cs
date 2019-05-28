@@ -124,6 +124,25 @@ namespace ConsoleApplication9{
             pos = int.Parse(Console.ReadLine());
             cartaJogador2 = jogador2[pos];
         }
+        static int getPeso(string carta)    {   
+            string naipe = ""+carta[1];
+            string valor = ""+carta[0];
+            string[] pesoCartas = new string[10] {"4","5","6","7","Q","J","K","A","2","3"};
+            string[] pesoManilhas = new string[4] {"7O","AE","7C","4P"};
+            for(int i=1;i<=pesoManilhas.Length;i++){
+                if(carta==pesoManilhas[i-1]){
+                    return 10+i;
+                } 
+            }
 
+            for(int i=1;i<=pesoCartas.Length;i++){
+                if(valor==pesoCartas[i-1]){
+                    return i;
+                } 
+            }
+            
+            return 0;
+        }
+    
     }
 }
