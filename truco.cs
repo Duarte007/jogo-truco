@@ -169,14 +169,14 @@ namespace ConsoleApplication9{
             }
             static void placar(){
 
-            if (rodadaJogador1 > rodadaJogador2) {
-                pontoJogador1 += tento;
-            } else if (rodadaJogador1 < rodadaJogador2) {
-                pontoJogador2 += tento;
-            } 
+                if (rodadaJogador1 > rodadaJogador2) {
+                    pontoJogador1 += tento;
+                } else if (rodadaJogador1 < rodadaJogador2) {
+                    pontoJogador2 += tento;
+                } 
 
-            Console.WriteLine("Jogador1: " + pontoJogador1 + "a Jogador2: " + pontoJogador2);
-        }
+                Console.WriteLine("Jogador1: " + pontoJogador1 + "a Jogador2: " + pontoJogador2);
+            }
 
             static void jogadaJogador()
                 {
@@ -233,14 +233,34 @@ namespace ConsoleApplication9{
                 int pos;
                 Random valorAleatorio = new Random();
                 if(cartaJogador1 != ""){
-                    // to do...
+                    cartaJogador2 = testaCartaMaior();
                 } else {
                     pos = valorAleatorio.Next() % 4;
                     cartaJogador2 = jogador2[pos];
                 }
-                pos = int.Parse(Console.ReadLine());
-                cartaJogador2 = jogador2[pos];
             }
+
+            static string testaCartaMaior(){
+                string aux;
+                for (int i = 0 ; i < jogador2.Length ; i++){
+                    if(getPeso(jogador2[i]) > getPeso(cartaJogador1)){
+                        return jogador2[i];
+                    }
+                }
+
+                for(int j = 0 ; j < jogador2.Length ; j++){
+                    for(int k = 0 ; k < jogador2.Length ; k++){
+                        if(getPeso(jogador2[j]) > getPeso(jogador2[k]){
+                            aux = jogador2[j];
+                            jogador2[j] = jogador2[k];
+                            jogador2[k] = aux;
+                        }
+                    }
+                }
+
+                return jogador2[0];
+            }
+
 
     }
 }
