@@ -14,8 +14,8 @@ namespace ConsoleApplication9{
         static string[] jogador2;
         static string cartaJogador1 = "";
         static string cartaJogador2 = "";
-        static int rodadaJogador1 = 0;
-        static int rodadaJogador2 = 0;
+        static string rodadaJogador1 = "";
+        static string rodadaJogador2 = "";
         static int pontoJogador1 = 0;
         static int pontoJogador2 = 0;
         static int tento = 0;
@@ -169,9 +169,9 @@ namespace ConsoleApplication9{
             }
             static void placar(){
 
-                if (rodadaJogador1 > rodadaJogador2) {
+                if (getPeso(rodadaJogador1) > getPeso(rodadaJogador2)) {
                     pontoJogador1 += tento;
-                } else if (rodadaJogador1 < rodadaJogador2) {
+                } else if (getPeso(rodadaJogador1) < getPeso(rodadaJogador2)) {
                     pontoJogador2 += tento;
                 } 
 
@@ -250,7 +250,7 @@ namespace ConsoleApplication9{
 
                 for(int j = 0 ; j < jogador2.Length ; j++){
                     for(int k = 0 ; k < jogador2.Length ; k++){
-                        if(getPeso(jogador2[j]) > getPeso(jogador2[k]){
+                        if(getPeso(jogador2[j]) > getPeso(jogador2[k])){
                             aux = jogador2[j];
                             jogador2[j] = jogador2[k];
                             jogador2[k] = aux;
