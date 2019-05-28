@@ -12,8 +12,8 @@ namespace ConsoleApplication9{
         static int[] paus;
         static string[] jogador1;
         static string[] jogador2;
-        string cartaJogador1 = "";
-        string cartaJogador2 = "";
+        static string cartaJogador1 = "";
+        static string cartaJogador2 = "";
 
 
         private static void construtor(){
