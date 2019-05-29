@@ -64,7 +64,7 @@ namespace ConsoleApplication9 {
         static void controleJogada(){
              while ((pontoJogador1 < 12 || pontoJogador2 < 12) && !correr) {
                 if(tentoJogador == 2 || tentoBot == 2){
-                    System.Threading.Thread.Sleep(3000);
+                    System.Threading.Thread.Sleep(2000);
                     proximaRodada();
                 } else if (vezJogador1 && rodada <= 6) {
                     Console.WriteLine("\n\n>>>>>>> Vez do jogador 1:\n\n ");
@@ -90,7 +90,7 @@ namespace ConsoleApplication9 {
         }
 
         static void proximaRodada(){
-            System.Threading.Thread.Sleep(3000);
+            carregando(2000);
             Console.Clear();
             setTento();
             cartaJogador1 = "";
@@ -253,17 +253,19 @@ namespace ConsoleApplication9 {
             Random simOuNao = new Random();
             escolhaBot = frase.Next(0, 2);
 
+            vezJogador1 = true;
+            vezJogador2 = false;
+
             if(escolhaBot == 0){
                 Console.WriteLine("O BOT correu!");
                 correr = false;
                 pontoJogador1 += tento;
-                vezJogador1 = true;
-                vezJogador2 = false;
                 proximaRodada();
                 controleJogada();
             } else {
                 tento = pontuacao;
                 System.Console.WriteLine("CAI RATO!");
+                controleJogada();
             }
         }
 
@@ -271,9 +273,16 @@ namespace ConsoleApplication9 {
 
             if (getPeso(cartaJogador1) > getPeso(cartaJogador2)) {
                 tentoJogador++;
+                vezJogador1 = true;
+                vezJogador2 = false;
             }
             else if (getPeso(cartaJogador1) < getPeso(cartaJogador2)) {
                 tentoBot++;
+                vezJogador1 = false;
+                vezJogador2 = true;
+            } else if(getPeso(cartaJogador1) == getPeso(cartaJogador2)){
+                tentoBot++;
+                tentoJogador++;
             }
 
         }
@@ -356,20 +365,22 @@ namespace ConsoleApplication9 {
                 if(jogador2[i] != "") {
                     if (getPeso(jogador2[i]) > getPeso(cartaJogador1)) {
                         jogada = jogador2[i];
+                        jogador2[i] = "";
                         return jogada;
                     }
                 }
             }
             cartasAux = jogador2;
             for (int j = 0; j < jogador2.Length; j++) {
-                for (int k = 0; k < jogador2.Length; k++) {
-                    if (getPeso(jogador2[j]) > getPeso(jogador2[k])) {
+                for (int k = j+1; k < jogador2.Length; k++) {
+                    if (getPeso(cartasAux[j]) > getPeso(cartasAux[k])) {
                         aux = cartasAux[j];
                         cartasAux[j] = cartasAux[k];
                         cartasAux[k] = aux;
                     }
                 }
             }
+
             jogada = cartasAux[0];
             limpaValorBot(jogada);
             return jogada;
@@ -381,6 +392,36 @@ namespace ConsoleApplication9 {
                     jogador2[i] = "";
                 }
             }
+        }
+
+        static void carregando(int time) {
+            int slepTime = 100;
+            int vezes = time / slepTime;
+            int porcentagem = 100 / vezes;
+            int carregado = 0;
+
+            Console.Clear();
+
+            string vazio = "                                                                                                    ";
+            Console.WriteLine("[" + vazio + "] 0%");
+            System.Threading.Thread.Sleep(slepTime);
+
+            for(int i = 0; i < vezes; i++) {
+                string tracos = "";
+                carregado += porcentagem;
+                if(carregado > 100) carregado = 100;
+                for(int j = 0; j < carregado; j++) {
+                    tracos += "-";
+                }
+                tracos += vazio.Substring(0, 100 - carregado);
+                
+                Console.Clear();
+                Console.WriteLine("[" + tracos + "]" + carregado.ToString() + "%");
+
+                System.Threading.Thread.Sleep(slepTime);
+                
+            } 
+           
         }
 
     }
