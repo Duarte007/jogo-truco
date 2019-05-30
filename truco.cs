@@ -153,10 +153,10 @@ namespace ConsoleApplication9 {
 
             if (pontoJogador1 > pontoJogador2) {
                 Console.WriteLine("Jogador1 ganhou.");
-                 Console.WriteLine("\tPlacar:\nJogador 1: " + pontoJogador1 + "\nBot: " + pontoJogador2+"\n");
+                 Console.WriteLine("\n\n\tPlacar:\nJogador 1: " + pontoJogador1 + "\nBot: " + pontoJogador2+"\n");
             } else {
                 Console.WriteLine("BOT ganhou.");
-                 Console.WriteLine("\tPlacar:\nJogador 1: " + pontoJogador1 + "\nBot: " + pontoJogador2+"\n");
+                 Console.WriteLine("\n\n\tPlacar:\nJogador 1: " + pontoJogador1 + "\nBot: " + pontoJogador2+"\n");
             }
 
             Console.ReadKey();
