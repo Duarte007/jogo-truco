@@ -242,21 +242,25 @@ namespace ConsoleApplication9 {
         }
 
         static void truco(bool trucoBot) {
-            if(!trucoJog || trucoBot){
-                trucoJog = true;
-                if (tento == 2) {
-                    pedeTruco(new string[] {"E´ truco nessa porra", "Truco na cabeca!", "So´ jogo no truco!", "Truco! Pede seis!!"}, 4, trucoBot);
-                } else if (tento == 4) {
-                    pedeTruco(new string[] {"Seis rato!", "SEEEEEEEIIIIISS", "Seis!!", "AHHHHHHHHHHHH SEEEEEEEEEEEEEEEEEEIIIIIIIIISSSS"}, 6, trucoBot);
-                } else if (tento == 6) {
-                    pedeTruco(new string[] {"Nove rato!", "NOOOOVEEEEEE", "Nove!!", "AHHHHHHHHHHHH NOOOVEEEEEE"}, 9, trucoBot);
-                } else if (tento == 9) {
-                    pedeTruco(new string[] {"Queda rato!", "QUEEEEDAAAAAA", "Doze!!", "AHHHHHHHHHHHH DOOOOOOZEEEEEEE"}, 12, trucoBot);
+            if(tento != 12){
+                if(!trucoJog || trucoBot){
+                    trucoJog = true;
+                    if (tento == 2) {
+                        pedeTruco(new string[] {"E´ truco nessa porra", "Truco na cabeca!", "So´ jogo no truco!", "Truco! Pede seis!!"}, 4, trucoBot);
+                    } else if (tento == 4) {
+                        pedeTruco(new string[] {"Seis rato!", "SEEEEEEEIIIIISS", "Seis!!", "AHHHHHHHHHHHH SEEEEEEEEEEEEEEEEEEIIIIIIIIISSSS"}, 6, trucoBot);
+                    } else if (tento == 6) {
+                        pedeTruco(new string[] {"Nove rato!", "NOOOOVEEEEEE", "Nove!!", "AHHHHHHHHHHHH NOOOVEEEEEE"}, 9, trucoBot);
+                    } else if (tento == 9) {
+                        pedeTruco(new string[] {"Queda rato!", "QUEEEEDAAAAAA", "Doze!!", "AHHHHHHHHHHHH DOOOOOOZEEEEEEE"}, 12, trucoBot);
+                    }
+                } else {
+                    vezJogador1 = true;
+                    vezJogador2 = false;
+                    System.Console.WriteLine("Voce ja pediu truco!");
                 }
             } else {
-                vezJogador1 = true;
-                vezJogador2 = false;
-                System.Console.WriteLine("Voce ja pediu truco!");
+                System.Console.WriteLine("A partida já está valendo o tento maximo.");
             }
         }
 
