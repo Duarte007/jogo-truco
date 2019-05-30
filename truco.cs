@@ -260,6 +260,8 @@ namespace ConsoleApplication9 {
                     System.Console.WriteLine("Voce ja pediu truco!");
                 }
             } else {
+                vezJogador1 = true;
+                vezJogador2 = false;
                 System.Console.WriteLine("A partida já está valendo o tento maximo.");
             }
         }
