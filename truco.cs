@@ -140,7 +140,7 @@ namespace ConsoleApplication9 {
                     }
                 } else if (vezJogador2 && rodada <= 6) {
                     Console.WriteLine("\n\n>>>>>>> Vez do BOT:\n\n ");
-                    System.Threading.Thread.Sleep(2000);
+                    System.Threading.Thread.Sleep(1500);
                     jogadaBot();
                     if((rodada-1) % 2 == 0){
                         getPlacarDaRodada();
@@ -174,7 +174,10 @@ namespace ConsoleApplication9 {
             distribuircarta(jogador1);
             distribuircarta(jogador2);
             zeraEscolhaJogador1();
-            tento = 2;
+            if(pontoJogador1 == 10 || pontoJogador2 == 10)
+                tento = 4;
+            else 
+                tento = 2;
             tentoJogador = 0;
             tentoBot = 0;
             trucoJog = false;
@@ -187,26 +190,26 @@ namespace ConsoleApplication9 {
         }
 
         static void menu() {
-            int opc = 0;
+            string opc = "";
 
             mostraCartasJogador();
 
-            Console.WriteLine("\t1 - Jogar\n\t2 - Pedir Truco/Pedir mais\n\t3 - Correr\n");
-            opc = int.Parse(Console.ReadLine());
+            Console.WriteLine("\tJ - Jogar\n\tT - Pedir Truco/Pedir mais\n\tC - Correr\n");
+            opc = Console.ReadLine();
 
-            switch (opc) {
+            switch (opc.ToUpper()) {
 
-                case 1:
+                case "J":
                     jogadaJogador();
                     vezJogador1 = false;
                     vezJogador2 = true;
                     break;
 
-                case 2:
+                case "T":
                     truco(false);
                     break;
 
-                case 3: 
+                case "C": 
                     correr = true;
                     pontoJogador2 += tento;
                     Console.WriteLine("Jogador 1 correu!");
@@ -242,27 +245,33 @@ namespace ConsoleApplication9 {
         }
 
         static void truco(bool trucoBot) {
-            if(tento != 12){
-                if(!trucoJog || trucoBot){
-                    trucoJog = true;
-                    if (tento == 2) {
-                        pedeTruco(new string[] {"E´ truco nessa porra", "Truco na cabeca!", "So´ jogo no truco!", "Truco! Pede seis!!"}, 4, trucoBot);
-                    } else if (tento == 4) {
-                        pedeTruco(new string[] {"Seis rato!", "SEEEEEEEIIIIISS", "Seis!!", "AHHHHHHHHHHHH SEEEEEEEEEEEEEEEEEEIIIIIIIIISSSS"}, 6, trucoBot);
-                    } else if (tento == 6) {
-                        pedeTruco(new string[] {"Nove rato!", "NOOOOVEEEEEE", "Nove!!", "AHHHHHHHHHHHH NOOOVEEEEEE"}, 9, trucoBot);
-                    } else if (tento == 9) {
-                        pedeTruco(new string[] {"Queda rato!", "QUEEEEDAAAAAA", "Doze!!", "AHHHHHHHHHHHH DOOOOOOZEEEEEEE"}, 12, trucoBot);
+            if(pontoJogador1 < 10 && pontoJogador2 < 10){
+                if(tento != 12){
+                    if(!trucoJog || trucoBot){
+                        trucoJog = true;
+                        if (tento == 2) {
+                            pedeTruco(new string[] {"E´ truco nessa porra", "Truco na cabeca!", "So´ jogo no truco!", "Truco! Pede seis!!"}, 4, trucoBot);
+                        } else if (tento == 4) {
+                            pedeTruco(new string[] {"Seis rato!", "SEEEEEEEIIIIISS", "Seis!!", "AHHHHHHHHHHHH SEEEEEEEEEEEEEEEEEEIIIIIIIIISSSS"}, 6, trucoBot);
+                        } else if (tento == 6) {
+                            pedeTruco(new string[] {"Nove rato!", "NOOOOVEEEEEE", "Nove!!", "AHHHHHHHHHHHH NOOOVEEEEEE"}, 9, trucoBot);
+                        } else if (tento == 9) {
+                            pedeTruco(new string[] {"Queda rato!", "QUEEEEDAAAAAA", "Doze!!", "AHHHHHHHHHHHH DOOOOOOZEEEEEEE"}, 12, trucoBot);
+                        }
+                    } else {
+                        vezJogador1 = true;
+                        vezJogador2 = false;
+                        System.Console.WriteLine("Voce ja pediu truco!");
                     }
                 } else {
                     vezJogador1 = true;
                     vezJogador2 = false;
-                    System.Console.WriteLine("Voce ja pediu truco!");
+                    System.Console.WriteLine("A partida já está valendo o tento maximo.");
                 }
             } else {
                 vezJogador1 = true;
                 vezJogador2 = false;
-                System.Console.WriteLine("A partida já está valendo o tento maximo.");
+                System.Console.WriteLine("Nao é possivel pedir truco na mao de 10.");
             }
         }
 
@@ -270,7 +279,7 @@ namespace ConsoleApplication9 {
             int pos;
             int escolhaBot;
             Random frase = new Random();
-            pos = frase.Next(0, 3);
+            pos = frase.Next(0, 4);
             Console.WriteLine(grito[pos]);
 
             vezJogador1 = true;
@@ -352,8 +361,10 @@ namespace ConsoleApplication9 {
 
             rodada++;
             while (i == 0) {
-                Console.WriteLine("Digite o número da carta que você quer jogar:");
-                numcarta = int.Parse(Console.ReadLine());
+                do{
+                    numcarta = getNumCarta();
+                } while (numcarta == 0);
+               
                 if (numcarta <= escolha.Length) {
                     if (escolha[numcarta - 1] == 0) {
                         Console.WriteLine("Jogador 1 jogou a carta: " + jogador1[numcarta - 1]);
@@ -377,10 +388,24 @@ namespace ConsoleApplication9 {
             }
         }
 
+        static int getNumCarta(){
+            try{
+                Console.WriteLine("Digite o número da carta que você quer jogar:");
+                return int.Parse(Console.ReadLine());
+             } catch (System.FormatException error){
+                System.Console.WriteLine("Digite apenas numeros disponiveis.");
+                return 0;
+            }
+        }
+
         static void jogadaBot() {
             int pos;
             rodada++;
             Random valorAleatorio = new Random();
+
+            for (int i = 0; i < jogador2.Length; i++) {
+                    System.Console.WriteLine(jogador2[i]);
+            }
             if (cartaJogador1 != "") {
                 cartaJogador2 = testaCartaMaior();
             } else {
@@ -394,38 +419,71 @@ namespace ConsoleApplication9 {
             vezJogador1 = true;
             vezJogador2 = false;
             Console.WriteLine("O BOT jogou a carta: " + cartaJogador2+"\n");
+            System.Threading.Thread.Sleep(500);
         }
 
         static string testaCartaMaior() {
             string aux;
             string jogada;
             string[] cartasAux = new string[3];
+            string[] cartasMaiores = new string[3];
+            int count = 0;
+            bool temMaior = false;
+
+            for(int i = 0 ; i < cartasMaiores.Length ; i++){
+                cartasMaiores[i] = "";
+            }
 
             for (int i = 0; i < jogador2.Length; i++) {
                 if(jogador2[i] != "") {
                     if (getPeso(jogador2[i]) > getPeso(cartaJogador1)) {
-                        jogada = jogador2[i];
-                        jogador2[i] = "";
-                        return jogada;
+                        temMaior = true;
+                        cartasMaiores[count] = jogador2[i];
+                        count++;
                     }
                 }
             }
 
-            cartasAux = jogador2;
+            if(temMaior){
+                count = 0;
+                temMaior = false;
+                jogada = getMenorMaior(cartasMaiores);
+                limpaValorBot(jogada);
+                return jogada;
+            } else {
 
-            for (int j = 0; j < jogador2.Length; j++) {
-                for (int k = j+1; k < jogador2.Length; k++) {
-                    if (getPeso(cartasAux[j]) > getPeso(cartasAux[k])) {
-                        aux = cartasAux[j];
-                        cartasAux[j] = cartasAux[k];
-                        cartasAux[k] = aux;
+                cartasAux = jogador2;
+
+                for (int j = 0; j < jogador2.Length; j++) {
+                    for (int k = j+1; k < jogador2.Length; k++) {
+                        if (getPeso(cartasAux[j]) > getPeso(cartasAux[k])) {
+                            aux = cartasAux[j];
+                            cartasAux[j] = cartasAux[k];
+                            cartasAux[k] = aux;
+                        }
+                    }
+                }
+
+                jogada = cartasAux[0];
+                limpaValorBot(jogada);
+                return jogada;
+            }
+        }
+
+        static string getMenorMaior(string[] cartasMaiores){
+            string aux = "";
+
+             for (int j = 0; j < cartasMaiores.Length; j++) {
+                for (int k = j+1; k < cartasMaiores.Length; k++) {
+                    if (getPeso(cartasMaiores[j]) > getPeso(cartasMaiores[k])) {
+                        aux = cartasMaiores[j];
+                        cartasMaiores[j] = cartasMaiores[k];
+                        cartasMaiores[k] = aux;
                     }
                 }
             }
 
-            jogada = cartasAux[0];
-            limpaValorBot(jogada);
-            return jogada;
+            return cartasMaiores[0];
         }
 
         static void limpaValorBot(string cartaJogada){
