@@ -25,6 +25,10 @@ namespace ConsoleApplication9 {
         static int tentoJogador = 0;
         static int tentoBot = 0;
         static bool trucoJog = false;
+        static bool rodadaPar = true;
+        static int pesoMaoBot = 0;
+        static string primeiraFeita = "";
+
 
 
         private static void construtor() {
@@ -46,9 +50,16 @@ namespace ConsoleApplication9 {
             construtor();
             distribuircarta(jogador1);
             distribuircarta(jogador2);
+            getPesoMaoBot(jogador2);
 
             controleJogada();
 
+        }
+
+        static void getPesoMaoBot(string[] jogador2){
+            foreach(string carta in jogador2){
+                pesoMaoBot += getPeso(carta);
+            }
         }
 
         static void distribuircarta(string[] jogador) {
@@ -164,11 +175,13 @@ namespace ConsoleApplication9 {
         }
 
         static void proximaRodada(){
+            defineQuemComeca();
             System.Threading.Thread.Sleep(2000);
             carregando(1000);
             setTento();
             cartaJogador1 = "";
             cartaJogador2 = "";
+            primeiraFeita = "";
             rodada = 1;
             reiniciaJogo();
             distribuircarta(jogador1);
@@ -181,6 +194,18 @@ namespace ConsoleApplication9 {
             tentoJogador = 0;
             tentoBot = 0;
             trucoJog = false;
+        }
+
+        static void defineQuemComeca(){
+            if(rodadaPar){
+                rodadaPar = false;
+                vezJogador1 = false;
+                vezJogador2 = true;
+            } else {
+                rodadaPar = true;
+                vezJogador1 = true;
+                vezJogador2 = false;
+            }
         }
 
         static void zeraEscolhaJogador1() {
@@ -211,7 +236,7 @@ namespace ConsoleApplication9 {
 
                 case "C": 
                     correr = true;
-                    pontoJogador2 += tento;
+                    pontoJogador2 += getTento(tento);
                     Console.WriteLine("Jogador 1 correu!");
                     break;
 
@@ -219,6 +244,16 @@ namespace ConsoleApplication9 {
                     Console.WriteLine("Opcao invalida!");
                     break;
             }
+        }
+
+        static int getTento(int tento){
+            int tentoAnterior = 0;
+            if(tento % 2 == 0){
+                tentoAnterior = tento - 2;
+            } else {
+                tentoAnterior = tento - 3;
+            }
+            return tentoAnterior;
         }
 
         static int getPeso(string carta) {
@@ -317,17 +352,27 @@ namespace ConsoleApplication9 {
         static void getPlacarDaRodada() {
             if(cartaJogador1 != "" && cartaJogador2 != ""){
                 if (getPeso(cartaJogador1) > getPeso(cartaJogador2)) {
+                    if(tentoJogador == 0 && tentoBot == 0) primeiraFeita = "jogador";
                     tentoJogador++;
                     vezJogador1 = true;
                     vezJogador2 = false;
                 }
                 else if (getPeso(cartaJogador1) < getPeso(cartaJogador2)) {
+                    if(tentoJogador == 0 && tentoBot == 0) primeiraFeita = "bot";
                     tentoBot++;
                     vezJogador1 = false;
                     vezJogador2 = true;
                 } else if(getPeso(cartaJogador1) == getPeso(cartaJogador2)){
-                    tentoBot++;
-                    tentoJogador++;
+                    if(tentoJogador == 1 && tentoBot == 1){
+                        if(primeiraFeita == "bot"){
+                            tentoBot++;
+                        } else {
+                            tentoJogador++;
+                        }
+                    } else {
+                        tentoBot++;
+                        tentoJogador++;
+                    }
                 }
 
                 cartaJogador1 = "";
@@ -403,9 +448,6 @@ namespace ConsoleApplication9 {
             rodada++;
             Random valorAleatorio = new Random();
 
-            for (int i = 0; i < jogador2.Length; i++) {
-                    System.Console.WriteLine(jogador2[i]);
-            }
             if (cartaJogador1 != "") {
                 cartaJogador2 = testaCartaMaior();
             } else {
@@ -423,12 +465,26 @@ namespace ConsoleApplication9 {
         }
 
         static string testaCartaMaior() {
-            string aux;
             string jogada;
             string[] cartasAux = new string[3];
             string[] cartasMaiores = new string[3];
+            
+            cartasMaiores = verificaCartaMaior(cartasMaiores);
+
+            if(cartasMaiores[0] != ""){
+                jogada = getMenorMaiorCarta(cartasMaiores);
+                limpaValorBot(jogada);
+                return jogada;
+            } else {
+                cartasAux = jogador2;
+                jogada = getMenorCarta(cartasAux);
+                limpaValorBot(jogada);
+                return jogada;
+            }
+        }
+
+        static string[] verificaCartaMaior(string[] cartasMaiores){
             int count = 0;
-            bool temMaior = false;
 
             for(int i = 0 ; i < cartasMaiores.Length ; i++){
                 cartasMaiores[i] = "";
@@ -437,40 +493,16 @@ namespace ConsoleApplication9 {
             for (int i = 0; i < jogador2.Length; i++) {
                 if(jogador2[i] != "") {
                     if (getPeso(jogador2[i]) > getPeso(cartaJogador1)) {
-                        temMaior = true;
                         cartasMaiores[count] = jogador2[i];
                         count++;
                     }
                 }
             }
 
-            if(temMaior){
-                count = 0;
-                temMaior = false;
-                jogada = getMenorMaior(cartasMaiores);
-                limpaValorBot(jogada);
-                return jogada;
-            } else {
-
-                cartasAux = jogador2;
-
-                for (int j = 0; j < jogador2.Length; j++) {
-                    for (int k = j+1; k < jogador2.Length; k++) {
-                        if (getPeso(cartasAux[j]) > getPeso(cartasAux[k])) {
-                            aux = cartasAux[j];
-                            cartasAux[j] = cartasAux[k];
-                            cartasAux[k] = aux;
-                        }
-                    }
-                }
-
-                jogada = cartasAux[0];
-                limpaValorBot(jogada);
-                return jogada;
-            }
+            return cartasMaiores;
         }
 
-        static string getMenorMaior(string[] cartasMaiores){
+        static string getMenorMaiorCarta(string[] cartasMaiores){
             string aux = "";
 
              for (int j = 0; j < cartasMaiores.Length; j++) {
@@ -484,6 +516,22 @@ namespace ConsoleApplication9 {
             }
 
             return cartasMaiores[0];
+        }
+
+        static string getMenorCarta(string[] cartasAux){
+            string aux = "";
+
+            for (int j = 0; j < jogador2.Length; j++) {
+                for (int k = j+1; k < jogador2.Length; k++) {
+                    if (getPeso(cartasAux[j]) > getPeso(cartasAux[k])) {
+                        aux = cartasAux[j];
+                        cartasAux[j] = cartasAux[k];
+                        cartasAux[k] = aux;
+                    }
+                }
+            }
+
+            return cartasAux[0];
         }
 
         static void limpaValorBot(string cartaJogada){
