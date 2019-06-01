@@ -26,7 +26,6 @@ namespace ConsoleApplication9 {
         static int tentoBot = 0;
         static bool trucoJog = false;
         static bool rodadaPar = true;
-        static int pesoMaoBot = 0;
         static string primeiraFeita = "";
 
 
@@ -50,16 +49,20 @@ namespace ConsoleApplication9 {
             construtor();
             distribuircarta(jogador1);
             distribuircarta(jogador2);
-            getPesoMaoBot(jogador2);
 
             controleJogada();
 
         }
 
-        static void getPesoMaoBot(string[] jogador2){
+        static int getPesoMaoBot(string[] jogador2){
+            int pesoMaoBot = 0;
+
             foreach(string carta in jogador2){
-                pesoMaoBot += getPeso(carta);
+                if(carta != "")
+                    pesoMaoBot += getPeso(carta);
             }
+
+            return pesoMaoBot;
         }
 
         static void distribuircarta(string[] jogador) {
@@ -187,7 +190,7 @@ namespace ConsoleApplication9 {
             distribuircarta(jogador1);
             distribuircarta(jogador2);
             zeraEscolhaJogador1();
-            if(pontoJogador1 == 10 || pontoJogador2 == 10)
+            if(pontoJogador1 == 10 || pontoJogador2 == 10 && !correr)
                 tento = 4;
             else 
                 tento = 2;
@@ -248,6 +251,9 @@ namespace ConsoleApplication9 {
 
         static int getTento(int tento){
             int tentoAnterior = 0;
+
+            if(tento == 2) return tento;
+
             if(tento % 2 == 0){
                 tentoAnterior = tento - 2;
             } else {
@@ -321,24 +327,168 @@ namespace ConsoleApplication9 {
             vezJogador2 = false;
 
             if(!trucoBot){
-                Random simOuNao = new Random();
-                escolhaBot = simOuNao.Next(0, 2);
-                respostaBot(escolhaBot, pontuacao);
+                int probabilidade = analisaProbabilidade();
+                if(probabilidade == 1){
+                    respostaBot(1, pontuacao, -1);
+                } else if(probabilidade == 0){
+                    respostaBot(0, pontuacao, -1);
+                } else {
+                    Random simOuNao = new Random();
+                    escolhaBot = simOuNao.Next(0, 2);
+                    respostaBot(escolhaBot, pontuacao, 0);
+                }
             } else {
                 tento = pontuacao;
                 trucoJog = false;
             }
         }
 
-        static void respostaBot(int escolhaBot, int pontuacao){
-            int flag;
+        static int analisaProbabilidade(){
+            int qtdCartas = 0;
+
+            foreach(string carta in jogador2){
+                if(carta != ""){
+                    qtdCartas++;
+                }
+            }
+
+            if(qtdCartas == 3){
+                
+                bool maoForte = temMaoForte();
+
+                if(maoForte){
+                    // aceita
+                    return 1;
+                } else {
+                    if(getPesoMaoBot(jogador2) < 17){
+                        // corre
+                        return 0;
+                    } else {
+                        // aleatorio
+                        return 2;
+                    }
+                }
+
+            } else if(qtdCartas == 2){
+                
+                if(tentoJogador == 1){
+
+                    bool maoForte = temMaoForte();
+
+                    if(maoForte){
+                        // aceita
+                        return 1;
+                    } else {
+                        bool aceita = false;
+                        foreach(string carta in jogador2){
+                            int pesoCarta = getPeso(carta);
+                            if(pesoCarta >= 9){
+                                aceita = true;
+                            }
+                        }
+
+                        if(!aceita){
+                            // corre
+                            return 1;
+                        } else {
+                           if(getPesoMaoBot(jogador2) < 15){
+                                // corre
+                                return 0;
+                            } else {
+                                // aleatorio
+                                return 2;
+                            }
+                        }
+                    }
+                   
+                } else if (tentoBot == 1){
+                    bool maoForte = temMaoForte();
+                    if(maoForte){
+                        // aceita
+                        return 1;
+                    } else {
+                        if(getPesoMaoBot(jogador2) < 10){
+                            // corre
+                            return 0;
+                        } else {
+                            // aleatorio
+                            return 2;
+                        }
+                    }
+                }
+
+            } else if(qtdCartas == 1){
+                if(cartaJogador2 != ""){
+                    if(tentoBot == 1 && getPeso(cartaJogador2) >= 8){
+                        //aceita
+                        return 1;
+                    } else {
+                        // aleatorio
+                        return 2;
+                    }
+                } else {
+                    if(tentoBot == 1 && getPeso(getUltimaCartaBot()) > 9){
+                        //aceita
+                        return 1;
+                    } else {
+                        // corre
+                        return 0;
+                    }
+                }
+            } else {
+                if(cartaJogador2 != ""){
+                    if(getPeso(cartaJogador2) > 9){
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 2;
+                }
+            }
+
+            return 0;
+        }
+
+        static bool temMaoForte(){
+            int manilha = 0, tresOuDois = 0;
+
+            foreach(string carta in jogador2){
+                int pesoCarta = getPeso(carta);
+                if(pesoCarta >= 11){
+                    manilha++;
+                } else if(pesoCarta == 10 || pesoCarta == 9){
+                    tresOuDois++;
+                }
+            }
+
+            if((manilha >= 1 && tresOuDois >= 1) || (manilha > 1) || (tresOuDois > 1)){
+               return true;
+            } else {
+                return false;
+            }
+        }
+
+        static string getUltimaCartaBot(){
+            foreach(string carta in jogador2){
+                if(carta != ""){
+                    return carta;
+                }
+            }
+
+            return " ";
+        }
+
+        static void respostaBot(int escolhaBot, int pontuacao, int flag){
             if(escolhaBot == 0){
                 Console.WriteLine("O BOT correu!");
                 pontoJogador1 += tento;
                 proximaRodada();
             } else if(escolhaBot == 1){
                 Random pedeMais = new Random();
-                flag = pedeMais.Next(0, 2);
+                if(flag == -1){
+                    flag = pedeMais.Next(0, 2);
+                }
                 tento = pontuacao;
                 if(flag == 0){
                     System.Console.WriteLine("\nBOT:\nCAI RATO!");
